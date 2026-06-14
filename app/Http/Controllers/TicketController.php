@@ -35,7 +35,7 @@ class TicketController extends Controller
 
         $data['reported_by'] = auth()->id();
         $data['status'] = 'open';
-        $data['priority'] = 'medium';
+        $data['priority'] = 'low';
 
         $ticket = Ticket::create($data);
 
@@ -59,7 +59,7 @@ class TicketController extends Controller
         $priority = match (true) {
             $count >= 3 => 'critical',
             $count == 2 => 'high',
-            default     => 'medium',
+            default     => 'low',
         };
 
         Ticket::where('location_id', $locationId)

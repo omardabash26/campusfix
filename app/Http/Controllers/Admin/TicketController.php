@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use App\Models\TicketComment;
+use App\Models\TicketStatusLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -32,6 +34,15 @@ class TicketController extends Controller
         $tickets = $query->latest()->get();
 
         return view('admin.tickets.index', compact('tickets'));
+    }
+
+    public function clearAll()
+    {
+        TicketStatusLog::query()->delete();
+        TicketComment::query()->delete();
+        Ticket::query()->delete();
+
+        return back()->with('success', 'כל הקריאות נמחקו מהמערכת.');
     }
 
     public function show(Ticket $ticket)

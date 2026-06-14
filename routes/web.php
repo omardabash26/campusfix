@@ -33,6 +33,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/tickets', [Admin\TicketController::class, 'index'])->name('tickets.index');
+    Route::delete('/tickets/clear', [Admin\TicketController::class, 'clearAll'])->name('tickets.clear');
     Route::get('/tickets/{ticket}', [Admin\TicketController::class, 'show'])->name('tickets.show');
     Route::put('/tickets/{ticket}/assign', [Admin\TicketController::class, 'assign'])->name('tickets.assign');
     Route::put('/tickets/{ticket}/status', [Admin\TicketController::class, 'updateStatus'])->name('tickets.status');

@@ -4,6 +4,20 @@
 @section('page-title', 'כל הקריאות')
 
 @section('content')
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">כל הקריאות</h5>
+    @if($tickets->isNotEmpty())
+        <form method="POST" action="{{ route('admin.tickets.clear') }}" class="m-0"
+              onsubmit="return confirm('פעולה זו תמחק לצמיתות את כל הקריאות במערכת. להמשיך?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-trash"></i> מחיקת כל הקריאות
+            </button>
+        </form>
+    @endif
+</div>
+
 <div class="card stat-card mb-4">
     <div class="card-body">
         <form method="GET" action="{{ route('admin.tickets.index') }}" class="row g-2 align-items-end">
