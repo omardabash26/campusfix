@@ -42,19 +42,6 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">עדיפות <span class="text-danger">*</span></label>
-                            <select name="priority" class="form-select @error('priority') is-invalid @enderror">
-                                <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>נמוכה</option>
-                                <option value="medium" {{ old('priority', 'medium') == 'medium' ? 'selected' : '' }}>בינונית</option>
-                                <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>גבוהה</option>
-                                <option value="critical" {{ old('priority') == 'critical' ? 'selected' : '' }}>קריטית</option>
-                            </select>
-                            @error('priority') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
                             <label class="form-label">מיקום <span class="text-danger">*</span></label>
                             @if(!empty($scanLocation))
                                 <input type="hidden" name="location_id" value="{{ $scanLocation->id }}">

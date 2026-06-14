@@ -26,25 +26,45 @@ class TicketController extends Controller
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'location_id' => 'required|exists:locations,id',
-            'priority'    => 'required|in:low,medium,high,critical',
         ], [
             'title.required'       => 'נא להזין כותרת.',
             'description.required' => 'נא לתאר את התקלה.',
             'category_id.required' => 'נא לבחור קטגוריה.',
             'location_id.required' => 'נא לבחור מיקום.',
-            'priority.required'    => 'נא לבחור עדיפות.',
         ]);
 
         $data['reported_by'] = auth()->id();
         $data['status'] = 'open';
+        $data['priority'] = 'medium';
 
         $ticket = Ticket::create($data);
+
+        $this->updateLocationPriority($ticket->location_id);
 
         session()->forget('scan_location_id');
 
         return redirect()
             ->route('tickets.thanks')
             ->with('ticket_number', $ticket->ticket_number);
+    }
+
+    private function updateLocationPriority($locationId)
+    {
+        $activeStatuses = ['open', 'assigned', 'in_progress'];
+
+        $count = Ticket::where('location_id', $locationId)
+            ->whereIn('status', $activeStatuses)
+            ->count();
+
+        $priority = match (true) {
+            $count >= 3 => 'critical',
+            $count == 2 => 'high',
+            default     => 'medium',
+        };
+
+        Ticket::where('location_id', $locationId)
+            ->whereIn('status', $activeStatuses)
+            ->update(['priority' => $priority]);
     }
 
     public function thanks()
