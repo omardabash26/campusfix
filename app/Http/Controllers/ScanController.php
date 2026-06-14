@@ -6,7 +6,6 @@ use App\Models\Location;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class ScanController extends Controller
 {
@@ -23,22 +22,16 @@ class ScanController extends Controller
 
         $request->validate([
             'identity_number' => 'required|string',
-            'password'        => 'required|string',
         ], [
             'identity_number.required' => 'נא להזין מספר זהות.',
-            'password.required'        => 'נא להזין סיסמה.',
         ]);
 
         $user = User::where('identity_number', $request->identity_number)
             ->where('is_active', true)
             ->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return back()->withErrors(['identity_number' => 'מספר הזהות או הסיסמה שגויים.'])->onlyInput('identity_number');
-        }
-
-        if (!in_array($user->role, ['student', 'lecturer'])) {
-            return back()->withErrors(['identity_number' => 'רק סטודנטים ומרצים יכולים לפתוח קריאה דרך סריקה.']);
+        if (!$user || !in_array($user->role, ['student', 'lecturer'])) {
+            return back()->withErrors(['identity_number' => 'מספר זהות לא נמצא או אינו שייך לסטודנט.'])->onlyInput('identity_number');
         }
 
         $code = (string) random_int(1000, 9999);

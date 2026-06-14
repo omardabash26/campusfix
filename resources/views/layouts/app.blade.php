@@ -138,9 +138,9 @@
 
         @else
             <div class="nav-section">ראשי</div>
-            <a href="{{ route('tickets.index') }}"
+            <a href="{{ route('tickets.create') }}"
                class="nav-link {{ request()->routeIs('tickets.*') ? 'active' : '' }}">
-                <i class="bi bi-ticket"></i> הקריאות שלי
+                <i class="bi bi-plus-circle"></i> פתיחת קריאה
             </a>
         @endif
     </nav>

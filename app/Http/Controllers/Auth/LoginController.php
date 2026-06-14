@@ -36,6 +36,13 @@ class LoginController extends Controller
         ];
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            if (in_array(auth()->user()->role, ['student', 'lecturer'])) {
+                Auth::logout();
+                return back()->withErrors([
+                    'identity_number' => 'סטודנטים מדווחים על תקלה דרך סריקת קוד QR.',
+                ])->onlyInput('identity_number');
+            }
+
             $request->session()->regenerate();
             return $this->redirectByRole();
         }

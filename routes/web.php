@@ -17,10 +17,9 @@ Route::get('/scan/{token}/otp', [ScanController::class, 'otpForm'])->name('scan.
 Route::post('/scan/{token}/otp', [ScanController::class, 'otpVerify'])->name('scan.otp.verify');
 
 Route::middleware(['auth', 'role:student,lecturer'])->group(function () {
-    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
     Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
     Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
-    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
+    Route::get('/tickets/thanks', [TicketController::class, 'thanks'])->name('tickets.thanks');
 });
 
 Route::middleware(['auth', 'role:technician'])->prefix('technician')->name('technician.')->group(function () {
@@ -50,7 +49,7 @@ Route::get('/', function () {
         ? redirect()->route(match(auth()->user()->role) {
             'admin'      => 'admin.dashboard',
             'technician' => 'technician.dashboard',
-            default      => 'tickets.index',
+            default      => 'tickets.create',
           })
         : redirect()->route('login');
 });

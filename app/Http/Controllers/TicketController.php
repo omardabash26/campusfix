@@ -9,16 +9,6 @@ use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-    public function index()
-    {
-        $tickets = Ticket::with(['location', 'category'])
-            ->where('reported_by', auth()->id())
-            ->latest()
-            ->get();
-
-        return view('tickets.index', compact('tickets'));
-    }
-
     public function create()
     {
         $categories = Category::orderBy('name')->get();
@@ -53,18 +43,18 @@ class TicketController extends Controller
         session()->forget('scan_location_id');
 
         return redirect()
-            ->route('tickets.show', $ticket)
-            ->with('success', 'הקריאה נפתחה בהצלחה. מספר קריאה: ' . $ticket->ticket_number);
+            ->route('tickets.thanks')
+            ->with('ticket_number', $ticket->ticket_number);
     }
 
-    public function show(Ticket $ticket)
+    public function thanks()
     {
-        if ($ticket->reported_by !== auth()->id()) {
-            abort(403, 'אין לך הרשאה לצפות בקריאה זו.');
+        $ticketNumber = session('ticket_number');
+
+        if (!$ticketNumber) {
+            return redirect()->route('tickets.create');
         }
 
-        $ticket->load(['location', 'category', 'technician']);
-
-        return view('tickets.show', compact('ticket'));
+        return view('tickets.thanks', compact('ticketNumber'));
     }
 }

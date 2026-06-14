@@ -27,17 +27,13 @@
 
         <form method="POST" action="{{ route('scan.verify', $token) }}">
             @csrf
-            <div class="mb-3">
+            <div class="mb-4">
                 <label class="form-label fw-semibold"><i class="bi bi-person-badge me-1"></i> מספר זהות</label>
                 <input type="text" name="identity_number" value="{{ old('identity_number') }}"
                        class="form-control form-control-lg" placeholder="הזן מספר זהות" autofocus required>
             </div>
-            <div class="mb-4">
-                <label class="form-label fw-semibold"><i class="bi bi-lock me-1"></i> סיסמה</label>
-                <input type="password" name="password" class="form-control form-control-lg" placeholder="הזן סיסמה" required>
-            </div>
             <button type="submit" class="btn btn-primary btn-lg w-100">
-                <i class="bi bi-arrow-left-circle me-1"></i> המשך
+                <i class="bi bi-send me-1"></i> שליחת קוד אימות
             </button>
         </form>
     </div>

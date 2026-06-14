@@ -4,12 +4,6 @@
 @section('page-title', 'פתיחת קריאה חדשה')
 
 @section('content')
-<div class="mb-3">
-    <a href="{{ route('tickets.index') }}" class="text-decoration-none text-muted small">
-        <i class="bi bi-arrow-right"></i> חזרה לקריאות שלי
-    </a>
-</div>
-
 <div class="row justify-content-center">
     <div class="col-lg-8">
         @if(!empty($scanLocation))
@@ -91,7 +85,6 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-send"></i> שליחת הקריאה
                         </button>
-                        <a href="{{ route('tickets.index') }}" class="btn btn-light">ביטול</a>
                     </div>
                 </form>
             </div>
